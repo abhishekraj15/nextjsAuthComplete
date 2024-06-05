@@ -21,6 +21,7 @@ const SignupPage = () => {
       setloading(true);
       const response = await axios.post("/api/users/signup", user);
       console.log("Signup Success", response.data);
+      toast.success("User Signup Successfully . A verification email send on your email.")
       router.push("/login");
     } catch (error: any) {
       console.log("Signup failed", error.message);
