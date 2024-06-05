@@ -30,6 +30,8 @@ const SignupPage = () => {
     }
   };
 
+  
+
   useEffect(() => {
     if (
       user.email.length > 0 &&
@@ -82,6 +84,8 @@ const SignupPage = () => {
       >
         {buttonDisabled ? "No signup" : "Signup"}
       </button>
+
+      
       <Link href="/login">Visit login page</Link>
     </div>
   );

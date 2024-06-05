@@ -42,9 +42,9 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
             or copy and paste the link below in your browser.
             <br> ${process.env.DOMAIN}/verifyemail?token=${hashedToken}
             </p>`
-          : `<p>Click <a href="${process.env.DOMAIN}resetpassword?token=${hashedToken}">here</a> to reset your password
+          : `<p>Click <a href="${process.env.DOMAIN}updatepassword?token=${hashedToken}">here</a> to reset your password
             or copy and paste the link below in your browser.
-            <br> ${process.env.DOMAIN}/resetpassword?token=${hashedToken}
+            <br> ${process.env.DOMAIN}/updatepassword?token=${hashedToken}
             </p>`,
     };
 

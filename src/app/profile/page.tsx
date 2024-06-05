@@ -8,6 +8,9 @@ import toast from "react-hot-toast";
 export default function ProfilePage() {
   const router = useRouter();
   const [data, setData] = useState("nothing");
+  const [useremail, setuseremail] = useState("");
+  const [userin, setUserIn] = useState(false);
+  const [updatePass, setUpdatePass] = useState(false);
 
   const logout = async () => {
     try {
@@ -22,8 +25,26 @@ export default function ProfilePage() {
 
   const getUserDetails = async () => {
     const res = await axios.get("/api/users/me");
-    console.log(res.data);
+    console.log("Data", res.data);
     setData(res.data.data._id);
+    setuseremail(res.data.data.email);
+    setUserIn(true)
+    console.log(res.data.email);
+  };
+
+  const onForgotPassword = async () => {
+    try {
+      const response = await axios.post("/api/users/reset", {
+        email: useremail,
+        emailType: "RESET",
+      });
+      console.log("Forgot Password Success", response.data);
+      toast.success("Password reset email sent!");
+      setUpdatePass(true);
+    } catch (error: any) {
+      console.log("Forgot Password failed", error.message);
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -38,6 +59,7 @@ export default function ProfilePage() {
           <Link href={`/profile/${data}`}>{data}</Link>
         )}
       </h2>
+      <h2>{useremail}</h2>
       <hr />
       <button
         onClick={logout}
@@ -45,6 +67,21 @@ export default function ProfilePage() {
       >
         Logout
       </button>
+
+      {userin ? <button
+        onClick={onForgotPassword}
+        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 mt-3"
+      >
+        Forgot Password
+      </button> : null}
+
+      {updatePass ? (
+        <Link href="/updatepassword">
+          <button className="bg-blue-500 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Go to Pass Update
+          </button>
+        </Link>
+      ) : null}
 
       <button
         onClick={getUserDetails}
