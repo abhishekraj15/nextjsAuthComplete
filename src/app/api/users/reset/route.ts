@@ -23,15 +23,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate a hashed token for the reset password
-    const hashedToken = await bcryptjs.hash(user._id.toString(), 10);
+    // const hashedToken = await bcryptjs.hash(user._id.toString(), 10);
 
     // Update user's forgotPasswordToken and forgotPasswordTokenExpiry
-    await User.findByIdAndUpdate(user._id, {
-      $set: {
-        forgotPasswordToken: hashedToken,
-        forgotPasswordTokenExpiry: Date.now() + 3600000, // Expiry in 1 hour
-      },
-    });
+    // await User.findByIdAndUpdate(user._id, {
+    //   $set: {
+    //     forgotPasswordToken: hashedToken,
+    //     forgotPasswordTokenExpiry: Date.now() + 3600000, // Expiry in 1 hour
+    //   },
+    // });
 
     // Send reset password email
     await sendEmail({ email, emailType, userId: user._id });

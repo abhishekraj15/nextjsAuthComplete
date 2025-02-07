@@ -13,7 +13,8 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
           verifyTokenExpiry: Date.now() + 3600000,
         },
       });
-    } else if (emailType === "RESET") {
+    }
+    else if (emailType === "RESET") {
       await User.findByIdAndUpdate(userId, {
         $set: {
           forgotPasswordToken: hashedToken,
@@ -22,17 +23,29 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
       });
     }
 
+    // using testing 3rd party
     const transport = nodemailer.createTransport({
       host: "sandbox.smtp.mailtrap.io",
       port: 2525,
       auth: {
-        user: process.env.TRANSPORT_USER, //env ka work
-        pass: process.env.TRANSPORT_PASS, //env ka work
+        user: process.env.TRANSPORT_USER,
+        pass: process.env.TRANSPORT_PASS,
       },
     });
 
+
+    // For Your Gmail Purpose using self mail
+    // const transport = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     user: process.env.TRANSPORT_USER,
+    //     pass: process.env.TRANSPORT_PASS,
+    //   },
+    // });
+
     const mailOptions = {
-      from: process.env.MAIL_OPTION_MAIL,
+      // while using self email
+      // from: process.env.MAIL_OPTION_MAIL, 
       to: email,
       subject:
         emailType === "VERIFY" ? "Verify your email" : "Reset your password",
@@ -50,7 +63,7 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
 
     const mailResponse = await transport.sendMail(mailOptions);
     return mailResponse;
-    
+
   } catch (error: any) {
     throw new Error(error.message);
   }
