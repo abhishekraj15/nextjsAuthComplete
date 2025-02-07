@@ -11,7 +11,7 @@ export async function connect() {
     connection.on("error", () => {
       console.log(
         "Mongoose connection error, please make sure db is up and running :" +
-          error
+        error
       );
       process.exit();
     });

@@ -5,13 +5,12 @@ import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import { sendEmail } from "@/helpers/mailer";
 
-// Establish database connection
 connect();
 
-// Define the POST function
+
 export async function POST(request: NextRequest) {
   try {
-    // Parse request body
+
     const reqBody = await request.json();
     const { email, emailType } = reqBody;
 
