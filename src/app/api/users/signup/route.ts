@@ -9,6 +9,7 @@ connect();
 
 export async function POST(request: NextRequest) {
   try {
+
     const reqBody = await request.json();
     const { username, email, password } = reqBody;
     //validation
@@ -16,11 +17,10 @@ export async function POST(request: NextRequest) {
 
     const user = await User.findOne({ email });
     if (user) {
-      // await sendEmail({ email, emailType: "VERIFY", userId: user._id });
       if (!user.isVerified) {
+        await sendEmail({ email, emailType: "VERIFY", userId: user._id });
         return NextResponse.json(
-          { error: "User Already Exists, Please verify your email" },
-          { status: 400 }
+          { error: "User Already Exists, Please verify your email", status: 409 },
         )
       }
       return NextResponse.json(
@@ -41,11 +41,17 @@ export async function POST(request: NextRequest) {
 
     //send verification mail
     await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
-    return NextResponse.json({
-      message: "User registered successfully",
-      success: true,
-      savedUser,
-    });
+    return NextResponse.json(
+      {
+        message: "User registered successfully",
+        success: true,
+        savedUser,
+
+      },
+      {
+        status: 200
+      }
+    );
   } catch (error: any) {
     return NextResponse.json(
       {

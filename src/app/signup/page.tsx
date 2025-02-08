@@ -20,8 +20,13 @@ const SignupPage = () => {
     try {
       setloading(true);
       const response = await axios.post("/api/users/signup", user);
+      if (response.status === 409) {
+        toast.success("User already registered. Verify mail.");
+      }
       console.log("Signup Success", response.data);
-      toast.success("User Signup Successfully . A verification email send on your email.")
+      toast.success(
+        "User Signup Successfully . A verification email send on your email."
+      );
       router.push("/login");
     } catch (error: any) {
       console.log("Signup failed", error.message);
@@ -30,8 +35,6 @@ const SignupPage = () => {
       setloading(false);
     }
   };
-
-  
 
   useEffect(() => {
     if (
@@ -86,7 +89,6 @@ const SignupPage = () => {
         {buttonDisabled ? "No signup" : "Signup"}
       </button>
 
-      
       <Link href="/login">Visit login page</Link>
     </div>
   );
