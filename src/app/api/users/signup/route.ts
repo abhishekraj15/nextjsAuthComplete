@@ -3,6 +3,7 @@ import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import { sendEmail } from "@/helpers/mailer";
+import { error } from "console";
 
 connect();
 
@@ -16,6 +17,12 @@ export async function POST(request: NextRequest) {
     const user = await User.findOne({ email });
     if (user) {
       // await sendEmail({ email, emailType: "VERIFY", userId: user._id });
+      if (!user.isVerified) {
+        return NextResponse.json(
+          { error: "User Already Exists, Please verify your email" },
+          { status: 400 }
+        )
+      }
       return NextResponse.json(
         { error: "User Already Exists" },
         { status: 400 }
